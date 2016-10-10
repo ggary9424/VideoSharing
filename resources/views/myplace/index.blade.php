@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('header')
+@section('head_for_script')
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
     <script type="text/javascript" src="/js/file_input.js"></script>    
 @endsection

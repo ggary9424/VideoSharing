@@ -6,11 +6,21 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\Video;
 use Auth;
+use Elasticsearch;
 use Redirect;
 use Validator;
 
 class MyplaceController extends Controller
 {
+    /* elasticsearch */
+    protected $es;
+
+    public function __construct()
+    {
+        $es = resolve('MyElasticSearch');
+        $this->es = $es;
+    }
+
     public function index () {
         $variable_need = ['video_count', 'videos_for_table'];
         if (!Auth::check()) {
@@ -44,11 +54,19 @@ class MyplaceController extends Controller
                       -> delete();
         if ($result >= 1) {
             $msg = 'Delete successfully';
+            
+            /* delete a document for elasticsearch */
+            $es_params = [
+                'index' => 'videosharing_index',
+                'type' => 'video',
+                'id' => $video_id
+            ];
+            $es_response = $this->es->delete($es_params);
         }
         else {
             $msg = 'Fail to delete';
         }
-        return Redirect::to('/myplace')->with('msg', $msg);;
+        return Redirect::to('/myplace')->with('msg', $msg);
     }
 
     public function upload (Request $request) {
@@ -66,15 +84,30 @@ class MyplaceController extends Controller
             $file = $request->file("video");
             $path = $file->store('/uploaded/');
 
-            /* create a video imformation */
-            Video::create([
-                'user_id' => Auth::user()->id,
-                'name' => $request->input('video_name'),
-                'type' => $file->getMimeType(),
-                'desc' => $request->input('video_desc'),
-                'views' => 0,
-                'path' => basename($path),
-            ]);
+            /* create a video imformation to database*/
+            $video = Video::create([
+                         'user_id' => Auth::user()->id,
+                         'name' => $request->input('video_name'),
+                         'type' => $file->getMimeType(),
+                         'desc' => $request->input('video_desc'),
+                         'views' => 0,
+                         'path' => basename($path),
+                     ]);
+
+            /* index a document for elasticsearch*/
+            $es_params = [
+                'index' => 'videosharing_index',
+                'type' => 'video',
+                'id' => $video->id,
+                'body' => [
+                            'name' => $video->name,
+                            'desc' => $video->desc,
+                            'user' => Auth::user()->name,
+                            'created_time' => $video->created_at->format('Y/m/d')
+                          ]
+            ];
+            $es_response = $this->es->index($es_params);
+
             $msg = 'Upload successfully !!!';
             return Redirect::to('myplace')->with('msg', $msg);
         }
@@ -83,8 +116,8 @@ class MyplaceController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'video_name' => 'required|max:20',
-            'video_desc' => 'max:50',
+            'video_name' => 'required|max:50',
+            'video_desc' => 'max:300',
             'video' => 'required|mimes:mp4',
         ]);
     }
