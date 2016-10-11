@@ -26,6 +26,7 @@ Route::group(['middleware' => ['web']], function () {
     /* VideoController */
     Route::get('video/{movie_id}', 'VideoController@getPlayPage');
     Route::get('video/stream/{movie_id}', 'VideoController@stream');
+	Route::get('video/thumbnail/{movie_id}', 'VideoController@thumbnail');
 
     /* Auth\LoginController */
     Route::get('auth/login', 'Auth\LoginController@showLoginForm');

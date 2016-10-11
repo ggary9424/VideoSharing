@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Models\Video;
 use Auth;
 use Redirect;
+use Storage;
 
 class VideoController extends Controller
 {
@@ -39,5 +40,9 @@ class VideoController extends Controller
         else {
             return response("File doesn't exists", 404);
         }   
+    }
+
+    public function thumbnail (int $movie_id) {
+        return Storage::get('thumbnail/thumb_'.$movie_id.'.png');
     }
 }

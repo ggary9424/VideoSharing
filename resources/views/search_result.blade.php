@@ -18,7 +18,7 @@
 			<a href="/video/{{ $video['_id'] }}" title="{{ $video['_source']['name'] }}">
 				<!-- TODO: Change url to video screenshot path -->
 				<div class="col-xs-12 col-sm-6 col-md-3 video-picture" 
-					 style="background-image: url('http://lorempixel.com/340/180/people')">
+					 style="background-image: url('/video/thumbnail/{{ $video['_id'] }}')">
 				</div>
 			</a>
 			<div class="col-xs-12 col-sm-4 col-md-2 video-properties">

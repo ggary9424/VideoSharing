@@ -81,7 +81,7 @@ class MyplaceController extends Controller
             
             /* get file from user */
             $file = $request->file("video");
-            $path = $file->store('/uploaded/');
+            $path = $file->store('/uploaded');
 
             /* create a video imformation to database*/
             $video = Video::create([
@@ -92,6 +92,21 @@ class MyplaceController extends Controller
                          'views' => 0,
                          'path' => basename($path),
                      ]);
+
+            /* get video information used for thumbnail*/
+            $id3= new \getID3();
+            $video_info = $id3->analyze(storage_path("app")."/".$path);
+            /* generate thumbnail for uploaded video */
+            if ($video_info['playtime_seconds'] >= 20) {;
+                exec("ffmpeg -ss 20 -i ".storage_path("app")."/".$path
+                        ." -y -f image2 -vframes 1 -s 340x180 ".storage_path("app/thumbnail")
+                        ."/thumb_".$video->id.".png");
+            }
+            else {
+                exec("ffmpeg -ss ".($playtime_seconds/2)." -i ".storage_path("app")."/".$path
+                        ." -y -f image2 -vframes 1 -s 340x180 ".storage_path("app/thumbnail")
+                        ."/thumb_".$video->id.".png");
+            }
 
             /* index a document for elasticsearch*/
             $es_params = [
