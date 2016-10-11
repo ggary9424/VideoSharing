@@ -17,15 +17,20 @@ It is project for me to start with [laravel](https://laravel.com/).
 ### Requirements
 * PHP >= 5.6.4
 * [Composer](https://getcomposer.org/)
-* [elasticsearch 2.4]()
+* [elasticsearch 2.4](https://www.elastic.co/products/elasticsearch)
 
 ### Quickstart
-* Set file `.env` like [offical laravel example](https://github.com/laravel/laravel/blob/master/.env.example).
-* Dependency installation and database setting.
-    ```bash
-    cd VideoSharing
+* Add file `.env` in VideoSharing like [this example](https://github.com/ggary9424/VideoSharing/blob/master/.env_example).
+* Dependency installation.
+    ```
     composer install
+    ```
+* Database migration.
+    ```
     php artisan migrate
+    ```
+* Elasticsearch index mapping.
+    ```
     php es_index_setting.php
     ```
 * Start server.
