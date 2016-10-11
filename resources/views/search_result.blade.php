@@ -16,8 +16,8 @@
 		@foreach ($videos_data as $key => $video)
 		<div class="search-result row">
 			<a href="/video/{{ $video['_id'] }}" title="{{ $video['_source']['name'] }}">
-				<div class="col-xs-12 col-sm-6 col-md-3 video-picture" 
 				<!-- TODO: Change url to video screenshot path -->
+				<div class="col-xs-12 col-sm-6 col-md-3 video-picture" 
 					 style="background-image: url('http://lorempixel.com/340/180/people')">
 				</div>
 			</a>

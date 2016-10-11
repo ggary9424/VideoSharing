@@ -47,9 +47,7 @@ $factory->define(App\Models\Video::class, function (Faker\Generator $faker) {
     try {
         $es_response = null;
         /* set hosts */
-        $hosts = [
-            'localhost:9200',
-        ];
+        $hosts = array(env('ES_HOST'));
         /* create client */;
         $es_client = Elasticsearch\ClientBuilder::create()->setHosts($hosts)->build();
         $es_params = [

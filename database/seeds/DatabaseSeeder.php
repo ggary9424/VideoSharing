@@ -14,11 +14,11 @@ class DatabaseSeeder extends Seeder
     {
         User::unguard();
         /* delete Elasticsearch index */
-        $hosts = [
-            'localhost:9200',
-        ];
+        $hosts = array(env('ES_HOST'));
         $client = Elasticsearch\ClientBuilder::create()->setHosts($hosts)->build();
-        $param = ['index' => 'videosharing_index'];
+        $param = [
+            'index' => 'videosharing_index',
+        ];
         try {
             $response = $client->indices()->delete($param);
             print_r($response);

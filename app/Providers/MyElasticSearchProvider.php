@@ -26,10 +26,7 @@ class MyElasticSearchProvider extends ServiceProvider
     {
         $this->app->singleton('MyElasticSearch', function($app) {
             /* set hosts */
-            $hosts = [
-                'localhost:9200',
-            ];
-            /* create client */
+            $hosts = array(env('ES_HOST'));
             $client = Elasticsearch\ClientBuilder::create()->setHosts($hosts)->build();
             return $client;
         });

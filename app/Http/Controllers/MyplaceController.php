@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\Video;
 use Auth;
-use Elasticsearch;
 use Redirect;
 use Validator;
 

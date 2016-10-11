@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use Elasticsearch;
 use Redirect;
 
 class SearchController extends Controller
@@ -31,14 +30,7 @@ class SearchController extends Controller
 
         /* frontend api */
         $variable_need = ['search_content', 'videos_count', 'videos_data'];
-        /* search documents for elasticsearch */
-        /* set hosts */
-        $hosts = [
-            'localhost:9200',
-        ];
-        $client = Elasticsearch\ClientBuilder::create()->setHosts($hosts)->build();
-        /* create client */
-        $es_client = Elasticsearch\ClientBuilder::create()->build();
+
         /* create a document */
         $es_params = [
             'index' => 'videosharing_index',

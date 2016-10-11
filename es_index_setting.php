@@ -1,9 +1,17 @@
 <?php
 
+/* The script is used for building the index mapping of elasticsearch,
+ * so you need configure the hosts of elasticsearch by yourself. After,
+ * I want to integrate this into migration of laravel. So if you have 
+ * some advices or want to try this, you can mail to "ggary9424@gmail.com"
+ * to have a discussion with me. Thank you so much.
+ */
+
 require 'vendor/autoload.php';
 
 use Elasticsearch\ClientBuilder;
 
+/* configure the hosts of elasticsearch here */
 $hosts = [
     'localhost:9200',
 ];
@@ -18,7 +26,7 @@ catch (Exception $e){
     print_r($response);
 }
 
-/* index setting */
+/* index mapping */
 $param = [
     'index' => 'videosharing_index',
     'body' => [
