@@ -10,10 +10,12 @@
             <div class="panel panel-default">
                 <div class="panel-heading">{{ $video['name'] }}</div>
                 <div class="panel-body">
-                    <video id="playing-video" class="video-js vjs-default-skin" controls
-                      preload="auto" width="640" height="480">
-                        <source src="/video/stream/{{ $video['id'] }}" type="{{ $video['type'] }}" />
-                    </video>
+                    <div class="embed-responsive embed-responsive-16by9">                    
+                        <video class="video-js vjs-default-skin" id="playing-video" 
+                            controls preload="auto">
+                            <source src="/video/stream/{{ $video['id'] }}" type="{{ $video['type'] }}" />
+                        </video>
+                    </div>
                     <script>
                         var player = videojs('playing-video', {}, function() {
                             this.play(); // if you don't trust autoplay for some reason 
@@ -23,8 +25,13 @@
                             });
                         });
                     </script>
-                 </div>
-             </div>
+                
+                <div class="col-md-12" id="video-desc">
+                    <h3>Description</h3>
+                    <p>{{ $video['desc'] }}</p>
+                </div>
+                </div>
+            <div>
         </div>
     </div>
 </div>

@@ -7010,3 +7010,13 @@ hgroup h2.lead {
 #search-video-form .dropdown .dropdown-menu {
     min-width: 40vw;
 }
+
+/* description of video play board */
+#video-desc {
+    margin-top: 15px;
+    background-color: #f2f2f2;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
