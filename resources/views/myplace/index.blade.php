@@ -4,11 +4,7 @@
     <script type="text/javascript" src="/js/file_input.js"></script>    
 @endsection
 @section('content')
-@if(Session::has('msg'))
-<div class="well" id="msg">
-    {{ Session::get('msg') }}
-</div>
-@endif
+@include('msgbox')
 <div class="container">
     <div class="row">
         <div class="col-md-11 col-md-offset-0">

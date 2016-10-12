@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
 use Validator;
+use App\Models\User;
+use App\Activation\ActivationService;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
@@ -22,6 +25,9 @@ class RegisterController extends Controller
 
     use RegistersUsers;
 
+    /* Activate user */
+    protected $activationService;
+
     /**
      * Where to redirect users after login / registration.
      *
@@ -34,9 +40,10 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(ActivationService $activationService)
     {
         $this->middleware('guest');
+        $this->activationService = $activationService;
     }
 
     /**
@@ -66,6 +73,34 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'activated' => false,
         ]);
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        $this->activationService->sendActivationMail($user);
+
+        return redirect('/auth/login')->with('msg', 'We sent you an activation code. Check your email.');
+    }
+
+    public function activateUser(String $token) {
+        $user = $this->activationService->activateUser($token);
+        if ($user) {
+            return view('auth.emails.activation_msg')->with('msg', 'Activate account successfully.');
+        }
+        else {
+            return view('auth.emails.activation_msg')->with('msg_warning', 'ERROR! Wrong operation.');
+        }
     }
 }

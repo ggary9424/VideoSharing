@@ -178,6 +178,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\MyElasticSearchProvider::class,
+        App\Providers\ActivationServiceProvider::class,
     ],
 
     /*
