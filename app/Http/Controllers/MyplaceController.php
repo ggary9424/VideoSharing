@@ -52,8 +52,6 @@ class MyplaceController extends Controller
                       -> where('user_id', Auth::user()->id)
                       -> delete();
         if ($result >= 1) {
-            $msg = 'Delete successfully';
-            
             /* delete a document for elasticsearch */
             $es_params = [
                 'index' => 'videosharing_index',
@@ -61,11 +59,10 @@ class MyplaceController extends Controller
                 'id' => $video_id
             ];
             $es_response = $this->es->delete($es_params);
+            return Redirect::to('/myplace')->with('msg_success', 'Delete successfully');
         }
-        else {
-            $msg = 'Fail to delete';
-        }
-        return Redirect::to('/myplace')->with('msg', $msg);
+
+        return Redirect::to('/myplace')->with('msg_danger', 'Fail to delete');
     }
 
     public function upload (Request $request) {
@@ -122,8 +119,8 @@ class MyplaceController extends Controller
             ];
             $es_response = $this->es->index($es_params);
 
-            $msg = 'Upload successfully !!!';
-            return Redirect::to('myplace')->with('msg', $msg);
+            $msg_success = 'Upload successfully !!!';
+            return Redirect::to('myplace')->with('msg_success', $msg_success);
         }
     }
 

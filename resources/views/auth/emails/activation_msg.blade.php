@@ -25,15 +25,15 @@
     </style>
 </head>
 <body>
-@if(isset($msg))
+@if(isset($msg_success))
 <div class="well well-default" style="text-align: center;">
-    {{ $msg }}
+    {{ $msg_success }}
 </div>
 @endif
-@if(isset($msg_warning))
+@if(isset($msg_danger))
 <div class="well well-warning" style="text-align: center;">
     <div class="">
-    {{ $msg_warning }}
+    {{ $msg_danger }}
 </div>
 @endif
 </body>

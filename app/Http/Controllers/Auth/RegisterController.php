@@ -91,16 +91,16 @@ class RegisterController extends Controller
 
         $this->activationService->sendActivationMail($user);
 
-        return redirect('login')->with('msg', 'We sent you an activation code. Check your email.');
+        return redirect('login')->with('msg_info', 'We sent you an activation code. Check your email.');
     }
 
     public function activateUser(String $token) {
         $user = $this->activationService->activateUser($token);
         if ($user) {
-            return view('auth.emails.activation_msg')->with('msg', 'Activate account successfully.');
+            return view('auth.emails.activation_msg')->with('msg_success', 'Activate account successfully.');
         }
         else {
-            return view('auth.emails.activation_msg')->with('msg_warning', 'ERROR! Wrong operation.');
+            return view('auth.emails.activation_msg')->with('msg_danger', 'ERROR! Wrong operation.');
         }
     }
 }
