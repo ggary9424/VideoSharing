@@ -18,6 +18,7 @@ It is project for me to start with [laravel](https://laravel.com/).
 * PHP >= 5.6.4
 * [Composer](https://getcomposer.org/)
 * [elasticsearch 2.4](https://www.elastic.co/products/elasticsearch)
+* [ffmpegthumbnailer](https://github.com/dirkvdb/ffmpegthumbnailer)
 
 ### Quickstart
 * Add file `.env` in VideoSharing like [this example](https://github.com/ggary9424/VideoSharing/blob/master/.env_example).
