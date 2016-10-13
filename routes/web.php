@@ -29,12 +29,16 @@ Route::group(['middleware' => ['web']], function () {
 	Route::get('video/thumbnail/{movie_id}', 'VideoController@thumbnail');
 
     /* Auth */
-    Route::get('auth/login', 'Auth\LoginController@showLoginForm');
-    Route::post('auth/login', 'Auth\LoginController@login');
-    Route::get('auth/logout', 'Auth\LoginController@logout');
-    Route::get('auth/register', 'Auth\RegisterController@showRegistrationForm');
-    Route::post('auth/register', 'Auth\RegisterController@register');
-    Route::get('auth/user/activation/{token}', 'Auth\RegisterController@activateUser')->name('user.activate');
+    Route::get('login', 'Auth\LoginController@showLoginForm');
+    Route::post('login', 'Auth\LoginController@login');
+    Route::get('logout', 'Auth\LoginController@logout');
+    Route::get('register', 'Auth\RegisterController@showRegistrationForm');
+    Route::post('register', 'Auth\RegisterController@register');
+    Route::get('user/activation/{token}', 'Auth\RegisterController@activateUser')->name('user.activate');
+    Route::get('password/forgot', 'Auth\ForgotPasswordController@showLinkRequestForm');
+    Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
+    Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm');
+    Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
     /* MyplaceController */
     Route::get('myplace', 'MyplaceController@index');

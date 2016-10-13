@@ -33,7 +33,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/auth/login';
+    protected $redirectTo = '/login';
 
     /**
      * Create a new controller instance.
@@ -91,7 +91,7 @@ class RegisterController extends Controller
 
         $this->activationService->sendActivationMail($user);
 
-        return redirect('/auth/login')->with('msg', 'We sent you an activation code. Check your email.');
+        return redirect('login')->with('msg', 'We sent you an activation code. Check your email.');
     }
 
     public function activateUser(String $token) {
