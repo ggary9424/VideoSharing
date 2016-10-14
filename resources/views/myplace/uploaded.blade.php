@@ -22,7 +22,7 @@
             var uploaded_videos = {!! $videos_for_table !!};
             var max_tr_num = 7;
             var video_count = {{$video_count}};
-            var page_num = (video_count+1)/max_tr_num;
+            var page_num = (video_count-1)/max_tr_num;
             videopage(1);
             for (var i=0; i<=page_num; i++) {
                     var btn = document.createElement('button');
