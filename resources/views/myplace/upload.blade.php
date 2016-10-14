@@ -28,7 +28,7 @@
                     <div class="col-md-6">
                         <div class="input-group">
                             <span class="btn btn-default btn-file">
-                                Browse <input type="file" name="video">
+                                Browse <input type="file" name="video" accept="video/*">
                             </span>
                             <span id="select_file_name" style="padding-left: 15px;"></span>
                         </div>
@@ -42,13 +42,20 @@
 
                 <div class="form-group">
                     <div class="col-md-6 col-md-offset-4">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary" id="upload-submit">
                             <i class="fa fa-btn fa-user"></i>Upload
                         </button>
+                        <label id="upload-wait-label"></label>
                     </div>
                 </div>
 
             </div>
-        </form>                    
+        </form>
+        <script>
+            $('#upload-submit').click(function() {
+                $(this).hide();
+                $('#upload-wait-label').html('Please wait...');
+            });
+        </script>
     </div>
 </div>

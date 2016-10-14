@@ -119,7 +119,7 @@ class MyplaceController extends Controller
         return Validator::make($data, [
             'video_name' => 'required|max:50',
             'video_desc' => 'max:300',
-            'video' => 'required|mimes:mp4',
+            'video' => 'required|mimes:mp4,ogg,webm',
         ]);
     }
 }

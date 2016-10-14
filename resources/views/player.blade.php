@@ -28,7 +28,11 @@
                 
                 <div class="col-md-12" id="video-desc">
                     <h3>Description</h3>
-                    <p>{{ $video['desc'] }}</p>
+                    @if (!$video['desc'])
+                        <p style="color: #6E6E6E">No descrption.</p>
+                    @else
+                        <p>{{ $video['desc'] }}</p>
+                    @endif
                 </div>
                 </div>
             <div>
