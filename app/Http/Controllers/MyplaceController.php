@@ -11,15 +11,6 @@ use Validator;
 
 class MyplaceController extends Controller
 {
-    /* elasticsearch */
-    protected $es;
-
-    public function __construct()
-    {
-        $es = resolve('MyElasticSearch');
-        $this->es = $es;
-    }
-
     public function index () {
         $variable_need = ['video_count', 'videos_for_table'];
         if (!Auth::check()) {
@@ -48,20 +39,20 @@ class MyplaceController extends Controller
     }
 
     public function deleteVideo (int $video_id) {
+        /* delete a video information from database and delete document from elasticsearch */
         $result = Video::where('id', $video_id)
                       -> where('user_id', Auth::user()->id)
+                      -> getModel()
+                      /* first() is every important. See https://github.com/laravel/framework/issues/2536 */
+                      -> first()
                       -> delete();
-        if ($result >= 1) {
-            /* delete a document for elasticsearch */
-            $es_params = [
-                'index' => 'videosharing_index',
-                'type' => 'video',
-                'id' => $video_id
-            ];
-            $es_response = $this->es->delete($es_params);
+
+        /* delete successfully */
+        if ($result == 1) {
             return Redirect::to('/myplace')->with('msg_success', 'Delete successfully');
         }
 
+        /* delete fail */
         return Redirect::to('/myplace')->with('msg_danger', 'Fail to delete');
     }
 
@@ -70,6 +61,7 @@ class MyplaceController extends Controller
             return Redirect::to('/');
         }
         else {
+
             /* validate first */
             $validator = $this->validator($request->all());
             if ($validator->fails()) {
@@ -80,7 +72,7 @@ class MyplaceController extends Controller
             $file = $request->file("video");
             $path = $file->store('/uploaded');
 
-            /* create a video imformation to database*/
+            /* create a video information to database and index document to elasticsearch */
             $video = Video::create([
                          'user_id' => Auth::user()->id,
                          'name' => $request->input('video_name'),
@@ -94,20 +86,6 @@ class MyplaceController extends Controller
             exec("ffmpegthumbnailer -i ".storage_path("app")."/".$path.
                                     " -o ".storage_path("app/thumbnail")."/thumb_".$video->id.".png".
                                     " -s 340x180 -t 20%");
-
-            /* index a document for elasticsearch*/
-            $es_params = [
-                'index' => 'videosharing_index',
-                'type' => 'video',
-                'id' => $video->id,
-                'body' => [
-                            'name' => $video->name,
-                            'desc' => $video->desc,
-                            'user' => Auth::user()->name,
-                            'created_time' => $video->created_at->format('Y/m/d')
-                          ]
-            ];
-            $es_response = $this->es->index($es_params);
 
             $msg_success = 'Upload successfully !!!';
             return Redirect::to('myplace')->with('msg_success', $msg_success);

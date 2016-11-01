@@ -19,7 +19,6 @@ Route::group(['middleware' => ['web']], function () {
                                  -> orderBy('views', 'desc')
                                  -> take(10)
                                  -> get();
-        //dd($videos);
         return view('index')->with('videos', $videos);
     });
 
