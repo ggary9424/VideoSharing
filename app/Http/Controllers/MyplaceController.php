@@ -5,12 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\Video;
+use App\Repositories\VideoRepository;
 use Auth;
 use Redirect;
 use Validator;
 
 class MyplaceController extends Controller
 {
+    protected $video_repository;
+
+    public function __construct (VideoRepository $video_repository) {
+        $this->video_repository = $video_repository;
+    }
+
     public function index () {
         $variable_need = ['video_count', 'videos_for_table'];
         if (!Auth::check()) {
@@ -19,23 +26,9 @@ class MyplaceController extends Controller
         else {
             $videos = Auth::user()->videos;
             $video_count = $videos->count();
-            $videos_for_table = $this->getUploaderVideosJsonForTable(1);
+            $videos_for_table = $this->video_repository->getUploaderVideosJsonForTable(1, Auth::user()->id);
             return view('myplace/index', compact($variable_need));
         }
-    }
-
-    public function getUploaderVideosJsonForTable (int $page_num) {
-        if ($page_num <= 0) {
-            return "";
-        }
-        $page_num = ($page_num-1)*100;
-        $result = Video::select(['id', 'name', 'views', 'created_at'])
-                      -> where('user_id', Auth::user()->id)
-                      -> orderBy('created_at', 'DESC')
-                      -> skip($page_num)
-                      -> take(100)
-                      -> get();
-        return $result->toJson();
     }
 
     public function deleteVideo (int $video_id) {

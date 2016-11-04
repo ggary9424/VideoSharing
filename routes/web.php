@@ -44,7 +44,10 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('myplace/uploaded/{page_num}', 'MyplaceController@getUploaderVideosJsonForTable');
     Route::delete('myplace/uploaded/{video_id}', 'MyplaceController@deleteVideo');
     Route::post('myplace/upload', 'MyplaceController@upload');
-    
+
+    /* Profile */
+    Route::get('user/{user_id}', 'ProfileController@getProfile');
+
     /* Search */
     Route::get('search', 'SearchController@getResult');
 });

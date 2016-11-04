@@ -22,7 +22,9 @@
                                 </a> 
                             </td>
                             <td>
-                                <p>{{ $video->user->name }}</p> 
+                                <a href="/user/{{ $video->user->id }}" style="color: #23527c">
+                                    {{ $video->user->name }}
+                                </a>
                             </td>
                             <td>
                                 <p>{{ $video['views'] }}</p>
